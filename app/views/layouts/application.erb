@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title><%= @title ? "#{@title} - #{APP_CONFIG['site_title']}": APP_CONFIG['site_title'] %></title>
     <meta name="description" content="<%= @description || APP_CONFIG['site_description'] %>">
-    <meta name="author" content="Robbin Fan">
+    <meta name="author" content="<%= @author || APP_CONFIG['site_author'] %>">
     <link href="/rss" rel="alternate" title="<%= APP_CONFIG['site_title'] %>" type="application/rss+xml" />
     <%= stylesheet_link_tag '/skins/default/document', '/skins/default/content' %>
     <%= yield_content :stylesheets %>
@@ -13,7 +13,7 @@
     <div id="flash-notice"></div>
     <div class="header">
       <div class="wrap">
-      	<div class="user_img"><img src="/skins/data/100.png" width="80" height="80" alt="website icon"></div>
+      	<div class="user_img"><img src="<%= APP_CONFIG['gravatar'] %>" width="80" height="80" alt="website icon"></div>
         <div class="blog_title"><%= APP_CONFIG['site_title'] %></div>
         <div class="write">
         <% unless account_login? -%>
@@ -47,7 +47,9 @@
           <li><a href="/blog" <%= "class='current'".html_safe if @nav == 'blog' %>>博客</a></li>
           <li><a href="/note" <%= "class='current'".html_safe if @nav == 'note' %>>笔记</a></li>
           <li><a href="/tag" <%= "class='current'".html_safe if @nav == 'tag' %>>分类</a></li>
-          <li><a href="/weibo" <%= "class='current'".html_safe if @nav == 'weibo' %>>微博</a></li>
+		  <% if !APP_CONFIG['weibo_api_key'].empty? %>
+				<li><a href="/weibo" <%= "class='current'".html_safe if @nav == 'weibo' %>>微博</a></li>
+		  <% end %>
           <li><a href="<%= APP_CONFIG['show_me_url'] %>" <%= "class='current'".html_safe if @nav == 'me' %>>关于</a></li>
         </ul>
       </div>
@@ -58,16 +60,16 @@
     </div><!-- content -->
     
     <div class="footer">
-    	<a href="http://weibo.com/robbinfan" class="weibo">Weibo</a>
-      <a href="https://github.com/robbin" class="github">Github</a>      
-      <a href="mailto:fankai@gmail.com" class="mail">Email</a>
+    	<a href="<%= APP_CONFIG['weibo'] %>" class="weibo">Weibo</a>
+      <a href="<%= APP_CONFIG['github'] %>" class="github">Github</a>      
+      <a href="mailto:<%= APP_CONFIG['email'] %>" class="mail">Email</a>
       <% if APP_CONFIG['show_certification'] %>
       <div class="certification">
-        <span>京ICP备13004925号-1</span><span>京公网安备11010502023235号</span>
+        <span><%= APP_CONFIG['certification'] %></span>
       </div>
       <% end %>
       <div class="powered-by">
-        <a href="http://robbinfan.com" title="robbin的自言自语">Powered by robbin</a>
+        <a href="<%= APP_CONFIG['power_url'] %>" title="<%= APP_CONFIG['power_title'] %>">Powered by <%= APP_CONFIG['power_by_who'] %></a>
       </div>
     </div><!-- footer -->
     <%= javascript_include_tag 'jquery', 'jquery-ujs', 'application' %>
